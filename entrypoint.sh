@@ -49,6 +49,7 @@ if ! flyctl status --app "$app"; then
   cp "$config" preview/
   cd preview
   flyctl launch --no-deploy --copy-config --name "$app" --image "$image" --region "$region" --org "$org"
+  cd ..
   # Restore the original config file
   cp "$config.bak" "$config"
 fi
