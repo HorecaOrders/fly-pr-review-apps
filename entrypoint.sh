@@ -32,6 +32,11 @@ fi
 
 # PR was closed - remove the Fly app if one exists and exit.
 if [ "$EVENT_TYPE" = "closed" ]; then
+  if [ -n "$INPUT_POSTGRES" ]; then
+    flyctl postgres detach "$INPUT_POSTGRES" --app "$app" || true
+    echo "DROP DATABASE $app WITH (FORCE);\q" | flyctl postgres connect "$INPUT_POSTGRES"
+    echo "DROP USER $app;\q" | flyctl postgres connect "$INPUT_POSTGRES"
+  fi
   flyctl apps destroy "$app" -y || true
   exit 0
 fi
