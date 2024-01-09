@@ -34,9 +34,9 @@ fi
 if [ "$EVENT_TYPE" = "closed" ]; then
   flyctl apps destroy "$app" -y || true
   if [ -n "$INPUT_POSTGRES" ]; then
-    flyctl postgres detach "$INPUT_POSTGRES" --app "$app" || true
-    echo "DROP DATABASE $app WITH (FORCE);\q" | flyctl postgres connect "$INPUT_POSTGRES"
-    echo "DROP USER $app;\q" | flyctl postgres connect "$INPUT_POSTGRES"
+    flyctl postgres detach "$app" --app "$INPUT_POSTGRES"  || true
+    echo "DROP DATABASE $app WITH (FORCE);\q" | flyctl postgres connect --app "$INPUT_POSTGRES"
+    echo "DROP USER $app;\q" | flyctl postgres connect --app "$INPUT_POSTGRES"
   fi
   exit 0
 fi
